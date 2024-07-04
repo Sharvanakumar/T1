@@ -4,7 +4,6 @@ import os
 @frappe.whitelist(allow_guest=True)
 def getMeta(**args):
 	doctype = args['doctype']
-	# print(frappe.form_dict.get("Purchase Invoice"))
 	try:
 		return frappe.get_meta(doctype)
 	except Exception as err:
@@ -25,7 +24,7 @@ def getDocIds(**args):
 @frappe.whitelist(allow_guest=True)
 def get_global_default():
 	return frappe.defaults.get_defaults()
-	
+
 @frappe.whitelist(allow_guest=True)
 def getGlobalDefaultData():
 	global_defaults = frappe.get_doc("Global Defaults")
@@ -37,22 +36,21 @@ def get_locals_details():
 	companies = frappe.get_list("Company",pluck='name',fields="*")
 	currencies = frappe.get_list("Currency",pluck='name',fields="*")
 	company_details = []
-	
+
 	for i in companies:
 		company = frappe.get_doc("Company",i)
 		company_details.append(company)
-		
+
 	currency_details = []
 	for i in currencies:
 		currency = frappe.get_doc("Currency",i)
-		if(currency.enabled):
+		if currency.enabled:
 			currency_details.append(currency)
-	
-	
+
+
 	localsObject['company_details'] = company_details
 	localsObject['currency_details'] = currency_details
-	
-	# return frappe.get_doc("Currency","INR")
+
 
 	return localsObject
 
@@ -91,7 +89,7 @@ export default {doctype.replace(' ', '')};
     with open(file_path, 'w') as file:
         file.write(file_content)
         return f"File {file_name} created successfully at {file_path}"
-	
+
 @frappe.whitelist(allow_guest=True)
 def get_boot_file():
 	print(dir(frappe.boot))
